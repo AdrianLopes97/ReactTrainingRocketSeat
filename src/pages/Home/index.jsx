@@ -22,7 +22,13 @@ export const Home = () => {
 
   return (
     <div className='qodeless'>
-      <h1>Qodeless - the 3 patetas</h1>
+      <header>
+        <h1>Qodeless - the 3 patetas</h1>
+        <div>
+          <strong>Adrian Lopes</strong>
+          <img src='https://github.com/AdrianLopes97.png' alt='Foto de perfil'></img>
+        </div>
+      </header>
       <input 
         type="text" 
         placeholder="Digite o nome ..."
