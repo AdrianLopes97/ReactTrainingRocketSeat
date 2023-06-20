@@ -1,5 +1,5 @@
 import './styles.css'
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '../../components/Card';
 
 export const Home = () => {
@@ -19,6 +19,14 @@ export const Home = () => {
 
     setStudents((prevState) => [...prevState, newStudent]);
   }
+
+  useEffect(() => {
+    console.log("useEffect foi 1 chamado!");
+  },[studentName]);
+
+  useEffect(() => {
+    console.log("useEffect foi 2 chamado!");
+  },[students]);
 
   return (
     <div className='qodeless'>
