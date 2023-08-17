@@ -1,6 +1,7 @@
 import './styles.css'
 import { useState, useEffect, Fragment } from 'react';
 import { Card } from '../../components/Card';
+import { getUserByUserName } from '../../api/github';
 
 function fetchSchoolDegree(){
   let degreeMap = [
@@ -34,16 +35,22 @@ export const Home = () => {
   const [shifts] = useState(["Manhã","Tarde","Noite"]);
   const [degrees, setDegrees] = useState([]);
   const [degreeSelected, setDegreeSelected] = useState("");
+  const [user,setUser] = useState({name:'', avatar: ''});
 
   function handleAddStudent() {
     const newStudent = {
-      name: studentName,
+      name: studentName.toLocaleUpperCase(),
       time: new Date().toLocaleTimeString("pt-BR", {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
       }),
     };
+
+    if(students.find(element => element.name === newStudent.name.toLocaleUpperCase())){
+      alert("student exists");
+      return;
+    }
 
     setStudents((prevState) => [...prevState, newStudent]);
   }
@@ -65,14 +72,26 @@ export const Home = () => {
     console.log("students updated");
   },[students]);
 
+  useEffect(() => {
+    async function getUserByUserNameAsync() {
+      const user =  await getUserByUserName({username:'AdrianLopes97'});
+      console.log("user ===>",user);
+      setUser({
+        name: user.name,
+        avatar: user.avatar
+      });
+    }
+
+    getUserByUserNameAsync();
+  },[]);
+
   return (
     <div className='qodeless'>
-
       <header>
         <h1>Qodeless - the 3 patetas</h1>
         <div>
-          <strong>Adrian Lopes</strong>
-          <img src='https://github.com/AdrianLopes97.png' alt='Foto de perfil'></img>
+          <strong>{user.name}</strong>
+          <img src={user.avatar} alt='Foto de perfil'></img>
         </div>
       </header>
 
