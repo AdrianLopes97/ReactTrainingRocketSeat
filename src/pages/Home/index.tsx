@@ -1,10 +1,20 @@
 import './styles.css'
 import { useState, useEffect, Fragment } from 'react';
-import { Card } from '../../components/Card';
-import { getUserByUserName } from '../../api/github';
+import { Card, CardProps } from '../../components/Card';
+import { getUserByUserName, GitHubUser } from '../../api/github';
 
-function fetchSchoolDegree(){
-  let degreeMap = [
+
+type SchoolMap = {
+  schoolName: string;
+  schedule: DegreMap[];
+}
+type DegreMap = {
+  shift: string;
+  degressAvailables: string[];
+}
+
+function fetchSchoolDegree() : SchoolMap{
+  const degreeMap: DegreMap[] = [
     {
       shift: "Manhã",
       degressAvailables:["Ensino Fundamental"]
@@ -19,7 +29,7 @@ function fetchSchoolDegree(){
     }
   ];
 
-  let schoolMap = {
+  const schoolMap: SchoolMap = {
     schoolName: "E.E.E.M. MARGOT",
     schedule: degreeMap
   }
@@ -29,16 +39,16 @@ function fetchSchoolDegree(){
 
 export const Home = () => {
 
-  const [studentName,setStudentName] = useState('');
-  const [students, setStudents] = useState([]);
+  const [studentName,setStudentName] = useState<string>('');
+  const [students, setStudents] = useState<CardProps[]>([]);
   const {schoolName, schedule } = fetchSchoolDegree();
-  const [shifts] = useState(["Manhã","Tarde","Noite"]);
-  const [degrees, setDegrees] = useState([]);
-  const [degreeSelected, setDegreeSelected] = useState("");
-  const [user,setUser] = useState({name:'', avatar: ''});
+  const [shifts] = useState<string[]>(["Manhã","Tarde","Noite"]);
+  const [degrees, setDegrees] = useState<string[]>([]);
+  const [degreeSelected, setDegreeSelected] = useState<string>('');
+  const [user,setUser] = useState<GitHubUser>({} as GitHubUser);
 
   function handleAddStudent() {
-    const newStudent = {
+    const newStudent:CardProps = {
       name: studentName.toLocaleUpperCase(),
       time: new Date().toLocaleTimeString("pt-BR", {
         hour: "2-digit",
@@ -55,7 +65,7 @@ export const Home = () => {
     setStudents((prevState) => [...prevState, newStudent]);
   }
 
-  function handleUpdateDegree(value) {
+  function handleUpdateDegree(value:string) {
     let scheduleByShift = schedule.find(item => item.shift === value);
     let degreesAvailables = scheduleByShift ? scheduleByShift.degressAvailables : [];
 
